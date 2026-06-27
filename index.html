@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Slider Otomatis</title>
+<title>Slider Pengumuman</title>
 
-<link
-rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-/>
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
 <style>
 
@@ -21,54 +20,105 @@ href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
 
 body{
     background:#f2f3f5;
+    overflow-x:hidden;
+    padding:10px 0 35px;
 }
 
-/* Slider */
-
 .swiper{
+
     width:100%;
-    height:auto;
+    max-width:700px;
+    margin:auto;
+    overflow:visible;
+
 }
 
 .swiper-slide{
+
     display:flex;
     justify-content:center;
     align-items:center;
+
+    transition:.3s;
+
 }
 
 .swiper-slide img{
-    width:min(90vw,500px);
-    height:auto;
-    display:block;
-}
 
-/* Tombol */
+    width:100%;
+    max-width:430px;
+
+    height:auto;
+
+    border-radius:14px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+
+    display:block;
+
+}
 
 .swiper-button-next,
 .swiper-button-prev{
-    color:white;
+
+    color:#ffffff;
+    background:rgba(0,0,0,.35);
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    backdrop-filter:blur(6px);
+
 }
 
-/* Pagination */
+.swiper-button-next::after,
+.swiper-button-prev::after{
 
-.swiper-pagination-bullet{
-    opacity:.8;
+    font-size:18px;
+
 }
 
 .swiper-pagination{
-    position:absolute !important;
-    bottom:-5px !important;
-    left:0;
-    width:100%;
+
+    position:relative;
+    margin-top:20px;
+
+}
+
+.swiper-pagination-bullet{
+
+    width:10px;
+    height:10px;
+
+    opacity:.5;
+
+}
+
+.swiper-pagination-bullet-active{
+
+    opacity:1;
+    transform:scale(1.4);
+
 }
 
 /* Tablet */
 
 @media(max-width:768px){
 
-    .swiper{
-        height:55vw;
-    }
+.swiper{
+
+    max-width:500px;
+
+}
+
+.swiper-slide img{
+
+    max-width:330px;
+
+}
 
 }
 
@@ -76,33 +126,43 @@ body{
 
 @media(max-width:480px){
 
-    .swiper{
-        height:50vw;
-        min-height:180px;
-    }
+.swiper{
 
-    .swiper-button-next,
-    .swiper-button-prev{
-        transform:scale(.7);
-    }
+    max-width:100%;
+
+}
+
+.swiper-slide img{
+
+    max-width:260px;
+
+}
+
+.swiper-button-next,
+.swiper-button-prev{
+
+    transform:scale(.8);
+
+}
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="swiper">
 
-    <div class="swiper-wrapper" id="sliderWrapper">
+    <div class="swiper-wrapper"
+    id="sliderWrapper"></div>
 
-    </div>
-
-    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
 
     <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
+
+    <div class="swiper-pagination"></div>
 
 </div>
 
@@ -110,60 +170,102 @@ body{
 
 <script>
 
-fetch('images.json')
+fetch("images.json")
 
-.then(response => response.json())
+.then(r=>r.json())
 
-.then(images => {
+.then(images=>{
 
-    const wrapper =
-    document.getElementById('sliderWrapper');
+const wrapper=document.getElementById("sliderWrapper");
 
-    images.forEach(image => {
+images.forEach(img=>{
 
-        const slide =
-        document.createElement('div');
+const slide=document.createElement("div");
 
-        slide.className = 'swiper-slide';
+slide.className="swiper-slide";
 
-        slide.innerHTML = `
-            <img src="images/${image}" alt="">
-        `;
+slide.innerHTML=`
+<img src="images/${img}" loading="lazy">
+`;
 
-        wrapper.appendChild(slide);
+wrapper.appendChild(slide);
 
-    });
+});
 
-    new Swiper('.swiper', {
+new Swiper(".swiper",{
 
-        loop:true,
+loop:true,
 
-        autoplay:{
-            delay:5000,
-            disableOnInteraction:false
-        },
+centeredSlides:true,
 
-        pagination:{
-            el:'.swiper-pagination',
-            clickable:true
-        },
+slidesPerView:1.2,
 
-        navigation:{
-            nextEl:'.swiper-button-next',
-            prevEl:'.swiper-button-prev'
-        }
+spaceBetween:20,
 
-    });
+effect:"coverflow",
 
-})
+coverflowEffect:{
 
-.catch(error => {
+rotate:0,
 
-    console.error(error);
+stretch:0,
+
+depth:180,
+
+modifier:1,
+
+scale:.88,
+
+slideShadows:false
+
+},
+
+autoplay:{
+
+delay:5000,
+
+disableOnInteraction:false
+
+},
+
+pagination:{
+
+el:".swiper-pagination",
+
+clickable:true
+
+},
+
+navigation:{
+
+nextEl:".swiper-button-next",
+
+prevEl:".swiper-button-prev"
+
+},
+
+breakpoints:{
+
+480:{
+slidesPerView:1.3
+},
+
+768:{
+slidesPerView:1.6
+},
+
+1024:{
+slidesPerView:1.8
+}
+
+}
+
+});
 
 });
 
 </script>
 
 </body>
+
 </html>
